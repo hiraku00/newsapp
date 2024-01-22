@@ -1,50 +1,21 @@
-import { FlatList, StyleSheet, View } from "react-native";
-import News from "./components/News";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { NEWS_API_KEY } from "@env";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import NewsScreen from "./screens/NewsScreen";
+import DetailScreen from "./screens/DetailScreen";
+import { RootStackParamList } from "./newsapi_types";
 
-const URI = `https://newsapi.org/v2/everything?q=tesla&from=2024-01-19&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+const Stack = createStackNavigator<RootStackParamList>();
 
-type NewsItem = {
-  urlToImage: string;
-  title: string;
-  publishedAt: string;
-};
-
-export default function App() {
-  const [news, setNews] = useState<NewsItem[]>([]);
-
-  useEffect(() => {
-    getNews();
-  }, []);
-
-  const getNews = async () => {
-    const response = await axios.get(URI);
-    console.log(response)
-    setNews(response.data.articles);
-  };
-
+function App() {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={news}
-        renderItem={({ item }) => (
-          <News
-            imageuri={item.urlToImage}
-            title={item.title}
-            subtext={item.publishedAt}
-          />
-        )}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="News" component={NewsScreen} />
+        <Stack.Screen name="Details" component={DetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});
+export default App;

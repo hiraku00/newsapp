@@ -1,17 +1,26 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface NewsProps {
   imageuri: string;
   title: string;
   subtext: string;
+  onPress: () => void;
 }
 
-export default function News({ imageuri, title, subtext }: NewsProps) {
+export default function News({ imageuri, title, subtext, onPress }: NewsProps) {
+
+  var date = new Date(subtext)
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDay();
+  var publish_date = year + '年' + month + '月' + day + '日'
+
   return (
-    <View style={styles.box}>
+    <TouchableOpacity style={styles.box} onPress={onPress}>
       <View style={styles.moziBox}>
-        <Text style={styles.Text}>{title}</Text>
-        <Text style={styles.subText}>{subtext}</Text>
+        <Text numberOfLines={3} style={styles.Text}>{title}</Text>
+        <Text style={styles.subText}>{publish_date}</Text>
       </View>
       <View style={styles.gazoBox}>
         <Image
@@ -21,7 +30,7 @@ export default function News({ imageuri, title, subtext }: NewsProps) {
           }}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -41,19 +50,17 @@ const styles = StyleSheet.create({
   },
   moziBox: {
     flex: 1,
-    backgroundColor: "steelblue",
     padding: 16,
     justifyContent: "space-between",
   },
   gazoBox: {
     width: 100,
-    backgroundColor: "powderblue",
   },
   Text: {
     fontSize: 16,
   },
   subText: {
     fontSize: 12,
-    color: "red",
+    color: "darkblue",
   },
 });
