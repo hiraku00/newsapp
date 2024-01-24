@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../newsapi_types";
 
-type DetailScreenRouteProp = RouteProp<RootStackParamList, "Details">;
+type DetailScreenRouteProp = RouteProp<RootStackParamList, "DetailScreen">;
 
 type Props = {
   route: DetailScreenRouteProp;

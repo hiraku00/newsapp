@@ -3,9 +3,11 @@ export type NewsItem = {
   title: string;
   publishedAt: string;
   url: string;
+  source: { name: string };
 };
 
 export type RootStackParamList = {
-  News: undefined;
-  Details: { article: NewsItem };
+  NewsScreen: undefined;
+  DetailScreen: { article: NewsItem };
+  WeatherScreen: undefined;
 };

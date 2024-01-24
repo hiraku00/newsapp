@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, StyleSheet, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import News from "../components/News";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -6,14 +6,14 @@ import { NEWS_API_KEY } from "@env";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList, NewsItem } from "../newsapi_types";
 
-type NewsScreenNavigationProp = StackNavigationProp<RootStackParamList, "News">;
+type NewsScreenNavigationProp = StackNavigationProp<RootStackParamList, "NewsScreen">;
 
 type Props = {
   navigation: NewsScreenNavigationProp;
 };
 
-// keyword=tesla, from=2024-01-10
-const URI = `https://newsapi.org/v2/everything?q=tesla&from=2024-01-10&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+// keyword=tesla, from=2024-01-20
+const URI = `https://newsapi.org/v2/everything?q=tesla&from=2024-01-20&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
 
 export default function NewsScreen({ navigation }: Props) {
   const [news, setNews] = useState<NewsItem[]>([]);
@@ -24,6 +24,7 @@ export default function NewsScreen({ navigation }: Props) {
 
   const getNews = async () => {
     const response = await axios.get(URI);
+    // debug
     console.log(response);
     setNews(response.data.articles);
   };
@@ -37,7 +38,8 @@ export default function NewsScreen({ navigation }: Props) {
             imageuri={item.urlToImage}
             title={item.title}
             subtext={item.publishedAt}
-            onPress={() => navigation.navigate("Details", { article: item })}
+            sourceName={item.source.name}
+            onPress={() => navigation.navigate("DetailScreen", { article: item })}
           />
         )}
         keyExtractor={(item, index) => index.toString()}

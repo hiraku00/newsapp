@@ -5,26 +5,42 @@ interface NewsProps {
   imageuri: string;
   title: string;
   subtext: string;
+  sourceName: string;
   onPress: () => void;
 }
 
-export default function News({ imageuri, title, subtext, onPress }: NewsProps) {
-
-  var date = new Date(subtext)
+export default function News({
+  imageuri,
+  title,
+  subtext,
+  sourceName,
+  onPress,
+}: NewsProps) {
+  var date = new Date(subtext);
   var year = date.getFullYear();
   var month = date.getMonth() + 1;
-  var day = date.getDay();
-  var publish_date = year + '年' + month + '月' + day + '日'
+  var day = date.getDate();
+  var now = new Date();
+  var diffInHours = Math.abs(now.getTime() - date.getTime()) / 36e5;
+
+  var publish_date = "";
+  if (diffInHours < 24) {
+    publish_date = `${sourceName}・${Math.floor(diffInHours)}時間前`;
+  } else {
+    publish_date = `${sourceName}・${year}/${month}/${day}`;
+  }
 
   return (
     <TouchableOpacity style={styles.box} onPress={onPress}>
       <View style={styles.moziBox}>
-        <Text numberOfLines={3} style={styles.Text}>{title}</Text>
+        <Text numberOfLines={3} style={styles.Text}>
+          {title}
+        </Text>
         <Text style={styles.subText}>{publish_date}</Text>
       </View>
       <View style={styles.gazoBox}>
         <Image
-          style={{ width: 100, height: 100 }}
+          style={{ width: 150, height: 100 }}
           source={{
             uri: imageuri,
           }}
@@ -44,8 +60,8 @@ const styles = StyleSheet.create({
   box: {
     height: 100,
     width: "100%",
-    borderColor: "lightblue",
-    borderWidth: 1,
+    borderColor: "lightgray",
+    borderWidth: 0.4,
     flexDirection: "row",
   },
   moziBox: {
@@ -54,13 +70,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   gazoBox: {
-    width: 100,
+    width: 150,
   },
   Text: {
     fontSize: 16,
   },
   subText: {
     fontSize: 12,
-    color: "darkblue",
+    color: "darkgray",
   },
 });
